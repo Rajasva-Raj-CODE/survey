@@ -28,31 +28,29 @@ export default function Sidebar({ activeTab, activeSubTab, onTabChange, onSubTab
   ];
 
   return (
-    <>
-      <aside
-        className={cn(
-          "fixed left-0 top-0 z-40 h-screen border-r border-border/40 bg-card/95 backdrop-blur transition-all duration-300",
-          isCollapsed ? "w-16" : "w-64"
+    <aside
+      className={cn(
+        "flex flex-col h-screen border-r border-border/40 bg-card/95 backdrop-blur transition-all duration-300",
+        isCollapsed ? "w-16" : "w-64"
+      )}
+    >
+      <div className="flex h-16 items-center justify-between border-b border-border/40 px-4 flex-shrink-0">
+        {!isCollapsed && (
+          <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
+            K-WaSH Dashboard
+          </h2>
         )}
-      >
-        <div className="flex h-full flex-col">
-          <div className="flex h-16 items-center justify-between border-b border-border/40 px-4">
-            {!isCollapsed && (
-              <h2 className="text-lg font-semibold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
-                K-WaSH Dashboard
-              </h2>
-            )}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsCollapsed(!isCollapsed)}
-              className="ml-auto"
-            >
-              {isCollapsed ? <Menu className="h-5 w-5" /> : <X className="h-5 w-5" />}
-            </Button>
-          </div>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="ml-auto"
+        >
+          {isCollapsed ? <Menu className="h-5 w-5" /> : <X className="h-5 w-5" />}
+        </Button>
+      </div>
 
-          <nav className="flex-1 space-y-2 overflow-y-auto p-4">
+      <nav className="flex-1 space-y-2 overflow-y-auto p-4">
             <div className="space-y-1">
               {mainTabs.map((tab) => {
                 const Icon = tab.icon;
@@ -108,16 +106,7 @@ export default function Sidebar({ activeTab, activeSubTab, onTabChange, onSubTab
                 </div>
               </>
             )}
-          </nav>
-        </div>
-      </aside>
-
-      <div
-        className={cn(
-          "transition-all duration-300",
-          isCollapsed ? "ml-16" : "ml-64"
-        )}
-      />
-    </>
+      </nav>
+    </aside>
   );
 }

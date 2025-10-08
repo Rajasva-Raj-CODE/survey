@@ -36,7 +36,7 @@ export default function DashboardLayout() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="flex h-screen overflow-hidden bg-background">
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute -top-32 -left-32 h-96 w-96 rounded-full bg-blue-300/20 blur-3xl" />
         <div className="absolute top-1/3 -right-32 h-96 w-96 rounded-full bg-cyan-300/20 blur-3xl" />
@@ -50,8 +50,8 @@ export default function DashboardLayout() {
         onSubTabChange={setActiveSubTab}
       />
 
-      <main className="transition-all duration-300">
-        <div className="container mx-auto py-8 px-6 md:px-10">
+      <main className="flex-1 overflow-y-auto">
+        <div className="h-full py-8 px-6 md:px-10">
           <div className="mb-6">
             <h1 className="text-3xl font-bold tracking-tight">
               Water Sanitation & Hygiene at Kumbh Mela 2025
