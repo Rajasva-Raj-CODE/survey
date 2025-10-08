@@ -12,8 +12,10 @@ import {
   Legend,
 } from "recharts";
 
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"; 
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import ScoreCard from "@/components/charts/ScoreCard";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // -------------------- Types --------------------
 type ResponseKey =
@@ -777,10 +779,22 @@ export default function SurveyDashboard() {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
+  const scoreCategories = [
+    { label: "Low", range: [0, 400] as [number, number], color: "#ef4444" },
+    { label: "Medium", range: [400, 700] as [number, number], color: "#fbbf24" },
+    { label: "High", range: [700, 1000] as [number, number], color: "#22c55e" },
+  ];
+
+  const overallScores = [
+    { score: 803, label: "Overall Satisfaction", description: "Combined satisfaction score across all metrics" },
+    { score: 756, label: "Hygiene Affinity", description: "User affinity towards hygiene practices" },
+    { score: 689, label: "WaSH Awareness", description: "General awareness of WaSH services" },
+  ];
+
   return (
     <div className="space-y-8">
       {/* Header Section */}
-      <h1 className="text-4xl font-bold tracking-tight mb-8 text-center leading-tight bg-gradient-to-r from-sky-500 to-fuchsia-500 bg-clip-text text-transparent">
+      <h1 className="text-4xl font-bold tracking-tight mb-8 text-center leading-tight bg-gradient-to-r from-sky-500 to-blue-500 bg-clip-text text-transparent">
         State of Psychosocial Factors of WaSH services
         <span className="text-primary block text-2xl font-normal mt-3">
           (Key Stakeholder: Floating Population)
@@ -790,22 +804,61 @@ export default function SurveyDashboard() {
         Interactive WaSH survey visualizations
       </p>
 
-      {/* Indicator Selection */}
-      <div className="flex flex-wrap justify-center gap-2 mb-6">
-        {indicators.map((ind) => (
-          <Button
-            key={ind}
-            size="sm"
-            className={`transition-transform ${ind === activeIndicator ? "" : "opacity-80 hover:opacity-100"}`}
-            variant={ind === activeIndicator ? undefined : "ghost"}
-            onClick={() => setActiveIndicator(ind)}
-          >
-            {ind}
-          </Button>
-        ))}
-      </div>
+      <ScoreCard
+        title="Key Performance Indicators"
+        scores={overallScores}
+        categories={scoreCategories}
+        min={0}
+        max={1000}
+      />
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <Tabs defaultValue="overview" className="w-full">
+        <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="detailed">Detailed Analysis</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="space-y-6">
+          <Card className="rounded-xl bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900/40 dark:to-blue-900/30 backdrop-blur-sm border border-border/50 shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-xl font-semibold">Summary Statistics</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="text-center p-6 rounded-lg bg-white/50 dark:bg-slate-800/50 border border-border/30">
+                  <div className="text-4xl font-bold text-green-600 mb-2">87%</div>
+                  <div className="text-sm text-muted-foreground">Agree with Hygiene Practices</div>
+                </div>
+                <div className="text-center p-6 rounded-lg bg-white/50 dark:bg-slate-800/50 border border-border/30">
+                  <div className="text-4xl font-bold text-blue-600 mb-2">84%</div>
+                  <div className="text-sm text-muted-foreground">Aware of WaSH Services</div>
+                </div>
+                <div className="text-center p-6 rounded-lg bg-white/50 dark:bg-slate-800/50 border border-border/30">
+                  <div className="text-4xl font-bold text-cyan-600 mb-2">78%</div>
+                  <div className="text-sm text-muted-foreground">Satisfied with Services</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="detailed" className="space-y-6">
+          {/* Indicator Selection */}
+          <div className="flex flex-wrap justify-center gap-2 mb-6">
+            {indicators.map((ind) => (
+              <Button
+                key={ind}
+                size="sm"
+                className={`transition-transform ${ind === activeIndicator ? "" : "opacity-80 hover:opacity-100"}`}
+                variant={ind === activeIndicator ? undefined : "ghost"}
+                onClick={() => setActiveIndicator(ind)}
+              >
+                {ind}
+              </Button>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         <aside className="lg:col-span-1">
           <Card className="p-4 rounded-xl bg-gradient-to-br from-slate-50 to-indigo-50 dark:from-slate-900/40 dark:to-indigo-900/30 backdrop-blur-sm border border-border/50 shadow-sm">
             <h3 className="font-semibold text-lg mb-4">Perspective</h3>
@@ -839,7 +892,9 @@ export default function SurveyDashboard() {
             </Card>
           )}
         </main>
-      </div>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
