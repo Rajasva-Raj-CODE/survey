@@ -1,9 +1,5 @@
-import SurveyDialog from "@/components/SurveyDialog";
+import DashboardLayout from "@/components/DashboardLayout";
 
 export default function Home() {
-  return (
-    <main>
-      <SurveyDialog />
-    </main>
-  );
+  return <DashboardLayout />;
 }
